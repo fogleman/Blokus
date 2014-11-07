@@ -1,16 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-
-#define EMPTY 0
-#define FILLED 1
-#define BLOCKED 2
-#define USABLE 3
-
-#define WIDTH 14
-#define HEIGHT 14
-#define SIZE 196
-#define PIECES 91
-#define PLACEMENTS 17836
+#include "bb.h"
+#include "common.h"
 
 typedef struct {
     int piece;
@@ -19,9 +10,51 @@ typedef struct {
     int height;
     char name[3];
     int data[7][7];
-} Piece;
+} Pattern;
 
-const Piece pieces[] = {
+typedef struct {
+    char valid;
+    bb filled;
+    bb border;
+    bb corner;
+} Move;
+
+void create_move(Pattern *pattern, int sq, Move *move) {
+    int x = sq % WIDTH;
+    int y = sq / WIDTH;
+    move->valid = 1;
+    bb_clear(&move->filled);
+    bb_clear(&move->border);
+    bb_clear(&move->corner);
+    for (int j = 0; j < 7; j++) {
+        for (int i = 0; i < 7; i++) {
+            int t = pattern->data[j][i];
+            int tx = x + i - 1;
+            int ty = y + j - 1;
+            if (tx < 0 || ty < 0 || tx >= WIDTH || ty >= HEIGHT) {
+                if (t == FILLED) {
+                    move->valid = 0;
+                }
+                continue;
+            }
+            int idx = SQ(tx, ty);
+            switch (t) {
+                case FILLED:
+                    BIT_SET(move->filled.data, idx);
+                    BIT_SET(move->border.data, idx);
+                    break;
+                case BORDER:
+                    BIT_SET(move->border.data, idx);
+                    break;
+                case CORNER:
+                    BIT_SET(move->corner.data, idx);
+                    break;
+            }
+        }
+    }
+}
+
+Pattern patterns[] = {
     { 0, 0, 1, 1,  "1", {{3, 2, 3, 0, 0, 0, 0}, {2, 1, 2, 0, 0, 0, 0}, {3, 2, 3, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}}},
     { 1, 0, 1, 2,  "2", {{3, 2, 3, 0, 0, 0, 0}, {2, 1, 2, 0, 0, 0, 0}, {2, 1, 2, 0, 0, 0, 0}, {3, 2, 3, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}}},
     { 1, 1, 2, 1,  "2", {{3, 2, 2, 3, 0, 0, 0}, {2, 1, 1, 2, 0, 0, 0}, {3, 2, 2, 3, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}}},
@@ -115,6 +148,56 @@ const Piece pieces[] = {
     {20, 3, 3, 3, "Z5", {{3, 2, 2, 3, 0, 0, 0}, {2, 1, 1, 2, 0, 0, 0}, {3, 2, 1, 2, 3, 0, 0}, {0, 2, 1, 1, 2, 0, 0}, {0, 3, 2, 2, 3, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}}},
 };
 
+int pattern_squares[PATTERNS][SQUARES][6];
+
+void init_pattern_squares() {
+    for (int p = 0; p < PATTERNS; p++) {
+        Pattern *pattern = patterns + p;
+        for (int s = 0; s < SQUARES; s++) {
+            for (int index = 0; index < 6; index++) {
+                pattern_squares[p][s][index] = -1;
+            }
+            int index = 0;
+            int x = s % WIDTH;
+            int y = s / WIDTH;
+            for (int j = 0; j < 7; j++) {
+                for (int i = 0; i < 7; i++) {
+                    int t = pattern->data[j][i];
+                    if (t != FILLED) {
+                        continue;
+                    }
+                    int ax = x - i + 1;
+                    int ay = y - j + 1;
+                    if (ax < 0 || ay < 0 || ax >= WIDTH || ay >= HEIGHT) {
+                        continue;
+                    }
+                    int bx = ax + pattern->width - 1;
+                    int by = ay + pattern->height - 1;
+                    if (bx < 0 || by < 0 || bx >= WIDTH || by >= HEIGHT) {
+                        continue;
+                    }
+                    pattern_squares[p][s][index++] = SQ(ax, ay);
+                }
+            }
+        }
+    }
+}
+
 int main(int argc, char *argv[]) {
+    Move move;
+    init_pattern_squares();
+    for (int p = 0; p < PATTERNS; p++) {
+        for (int s = 0; s < SQUARES; s++) {
+            for (int i = 0; i < 5; i++) {
+                int sq = pattern_squares[p][s][i];
+                if (sq < 0) {
+                    continue;
+                }
+                create_move(&patterns[p], sq, &move);
+                bb_print(&move.filled);
+                break;
+            }
+        }
+    }
     return 0;
 }
