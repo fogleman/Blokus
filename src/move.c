@@ -24,6 +24,7 @@ void do_move(Board *board, Move *move, Board *undo) {
         bb_or(other_border, other_border, &placement->filled);
         bb_and_not(other_corner, other_corner, other_border);
     }
+    board->score[board->player] += pattern->cells;
     board->pieces[board->player] &= ~(1 << pattern->piece);
     board->player = (board->player + 1) % PLAYERS;
 }

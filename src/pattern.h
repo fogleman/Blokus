@@ -6,6 +6,7 @@ typedef struct {
     int rotation;
     int width;
     int height;
+    int cells;
     char name[4];
     int data[7][7];
 } Pattern;

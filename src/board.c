@@ -11,6 +11,10 @@ void board_clear(Board *board) {
     BB_SET(board->corner[1], SQ(9, 9));
 }
 
+void board_copy(Board *dst, Board *src) {
+    memcpy(dst, src, sizeof(Board));
+}
+
 void board_print(Board *board) {
     char *codes = "xo";
     for (int y = 0; y < HEIGHT; y++) {
@@ -25,12 +29,6 @@ void board_print(Board *board) {
             }
             if (blank) {
                 printf(". ");
-                // if (BIT_TEST(board->corner[board->player].data, SQ(x, y))) {
-                //     printf("* ");
-                // }
-                // else {
-                //     printf(". ");
-                // }
             }
         }
         printf("\n");
