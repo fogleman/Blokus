@@ -13,6 +13,7 @@
 #define PIECES 21
 #define PATTERNS 91
 #define PLAYERS 2
+#define MOVES 4096
 
 #define SQ(x, y) ((y) * WIDTH + (x))
 

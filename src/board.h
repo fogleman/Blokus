@@ -11,4 +11,7 @@ typedef struct {
     bb corner[PLAYERS];
 } Board;
 
+void board_clear(Board *board);
+void board_print(Board *board);
+
 #endif

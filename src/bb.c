@@ -28,6 +28,12 @@ void bb_or(bb *out, bb *a, bb *b) {
     }
 }
 
+void bb_and_not(bb *out, bb *a, bb *b) {
+    for (int i = 0; i < SLOTS; i++) {
+        out->data[i] = a->data[i] & ~b->data[i];
+    }
+}
+
 int bb_lsb(bb *a) {
     int offset = 0;
     for (int i = 0; i < SLOTS; i++) {
@@ -37,4 +43,29 @@ int bb_lsb(bb *a) {
         offset += INT_BIT;
     }
     return -1;
+}
+
+int bb_pop_lsb(bb *a) {
+    int bit = bb_lsb(a);
+    if (bit >= 0) {
+        BIT_UNSET(a->data, bit);
+    }
+    return bit;
+}
+
+int bb_intersects(bb *a, bb *b) {
+    for (int i = 0; i < SLOTS; i++) {
+        if (a->data[i] & b->data[i]) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int bb_bits(bb *a) {
+    int result = 0;
+    for (int i = 0; i < SLOTS; i++) {
+        result += BITS(a->data[i]);
+    }
+    return result;
 }

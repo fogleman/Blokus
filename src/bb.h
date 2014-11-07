@@ -30,6 +30,10 @@ void bb_clear(bb *a);
 void bb_copy(bb *dst, bb *src);
 void bb_print(bb *a);
 void bb_or(bb *out, bb *a, bb *b);
+void bb_and_not(bb *out, bb *a, bb *b);
 int bb_lsb(bb *a);
+int bb_pop_lsb(bb *a);
+int bb_intersects(bb *a, bb *b);
+int bb_bits(bb *a);
 
 #endif
