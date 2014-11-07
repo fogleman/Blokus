@@ -18,11 +18,14 @@ int main(int argc, char *argv[]) {
     board_clear(&board);
     while (1) {
         Move move;
-        if (!search(&board, 2, &move)) {
+        if (!search(&board, 1, &move)) {
             break;
         }
         do_move(&board, &move, NULL);
         board_print(&board);
+    }
+    for (int i = 0; i < PLAYERS; i++) {
+        printf("%d: %d\n", i + 1, 89 - board.score[i]);
     }
     return 0;
 }
