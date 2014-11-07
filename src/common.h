@@ -10,9 +10,9 @@
 #define HEIGHT 14
 #define SQUARES 196
 #define CELLS 5
-// #define PIECES 21
+#define PIECES 21
 #define PATTERNS 91
-// #define PLACEMENTS 17836
+#define PLAYERS 2
 
 #define SQ(x, y) ((y) * WIDTH + (x))
 

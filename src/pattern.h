@@ -11,7 +11,7 @@ typedef struct {
 } Pattern;
 
 extern int pattern_squares[PATTERNS][SQUARES][CELLS];
-extern Pattern patterns[];
+extern Pattern patterns[PATTERNS];
 
 void init_pattern_squares();
 

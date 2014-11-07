@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include "common.h"
-#include "move.h"
+#include "placement.h"
 #include "pattern.h"
 
 int main(int argc, char *argv[]) {
     init_pattern_squares();
-    init_moves();
+    init_placements();
     int n = 0;
     for (int p = 0; p < PATTERNS; p++) {
         for (int i = 0; i < CELLS; i++) {
@@ -14,9 +14,8 @@ int main(int argc, char *argv[]) {
             if (sq < 0) {
                 break;
             }
-            Move *move = &pattern_moves[p][sq];
-            bb_print(&move->filled);
-            printf("%d\n", bb_lsb(&move->filled));
+            Placement *placement = &placements[p][sq];
+            bb_print(&placement->filled);
             n++;
         }
     }

@@ -1,15 +1,15 @@
 #include "common.h"
-#include "move.h"
+#include "placement.h"
 
-Move pattern_moves[PATTERNS][SQUARES];
+Placement placements[PATTERNS][SQUARES];
 
-void init_move(Pattern *pattern, int sq, Move *move) {
+void init_placement(Pattern *pattern, int sq, Placement *placement) {
     int x = sq % WIDTH;
     int y = sq / WIDTH;
-    move->valid = 1;
-    bb_clear(&move->filled);
-    bb_clear(&move->border);
-    bb_clear(&move->corner);
+    placement->valid = 1;
+    bb_clear(&placement->filled);
+    bb_clear(&placement->border);
+    bb_clear(&placement->corner);
     for (int j = 0; j < 7; j++) {
         for (int i = 0; i < 7; i++) {
             int t = pattern->data[j][i];
@@ -17,32 +17,32 @@ void init_move(Pattern *pattern, int sq, Move *move) {
             int ty = y + j - 1;
             if (tx < 0 || ty < 0 || tx >= WIDTH || ty >= HEIGHT) {
                 if (t == FILLED) {
-                    move->valid = 0;
+                    placement->valid = 0;
                 }
                 continue;
             }
             int idx = SQ(tx, ty);
             switch (t) {
                 case FILLED:
-                    BB_SET(move->filled, idx);
-                    BB_SET(move->border, idx);
+                    BB_SET(placement->filled, idx);
+                    BB_SET(placement->border, idx);
                     break;
                 case BORDER:
-                    BB_SET(move->border, idx);
+                    BB_SET(placement->border, idx);
                     break;
                 case CORNER:
-                    BB_SET(move->corner, idx);
+                    BB_SET(placement->corner, idx);
                     break;
             }
         }
     }
 }
 
-void init_moves() {
+void init_placements() {
     for (int p = 0; p < PATTERNS; p++) {
         for (int s = 0; s < SQUARES; s++) {
             Pattern *pattern = patterns + p;
-            init_move(pattern, s, &pattern_moves[p][s]);
+            init_placement(pattern, s, &placements[p][s]);
         }
     }
 }
