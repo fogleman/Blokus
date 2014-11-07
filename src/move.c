@@ -24,14 +24,14 @@ void init_move(Pattern *pattern, int sq, Move *move) {
             int idx = SQ(tx, ty);
             switch (t) {
                 case FILLED:
-                    BIT_SET(move->filled.data, idx);
-                    BIT_SET(move->border.data, idx);
+                    BB_SET(move->filled, idx);
+                    BB_SET(move->border, idx);
                     break;
                 case BORDER:
-                    BIT_SET(move->border.data, idx);
+                    BB_SET(move->border, idx);
                     break;
                 case CORNER:
-                    BIT_SET(move->corner.data, idx);
+                    BB_SET(move->corner, idx);
                     break;
             }
         }

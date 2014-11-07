@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include "bb.h"
 #include "common.h"
 #include "move.h"
 #include "pattern.h"
@@ -17,6 +16,7 @@ int main(int argc, char *argv[]) {
             }
             Move *move = &pattern_moves[p][sq];
             bb_print(&move->filled);
+            printf("%d\n", bb_lsb(&move->filled));
             n++;
         }
     }
