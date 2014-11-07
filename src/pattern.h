@@ -6,11 +6,11 @@ typedef struct {
     int rotation;
     int width;
     int height;
-    char name[3];
+    char name[4];
     int data[7][7];
 } Pattern;
 
-extern int pattern_squares[PATTERNS][SQUARES][6];
+extern int pattern_squares[PATTERNS][SQUARES][CELLS];
 extern Pattern patterns[];
 
 void init_pattern_squares();

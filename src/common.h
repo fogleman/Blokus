@@ -9,6 +9,7 @@
 #define WIDTH 14
 #define HEIGHT 14
 #define SQUARES 196
+#define CELLS 5
 // #define PIECES 21
 #define PATTERNS 91
 // #define PLACEMENTS 17836

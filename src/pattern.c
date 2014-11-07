@@ -1,13 +1,13 @@
 #include "common.h"
 #include "pattern.h"
 
-int pattern_squares[PATTERNS][SQUARES][6];
+int pattern_squares[PATTERNS][SQUARES][CELLS];
 
 void init_pattern_squares() {
     for (int p = 0; p < PATTERNS; p++) {
         Pattern *pattern = patterns + p;
         for (int sq = 0; sq < SQUARES; sq++) {
-            for (int index = 0; index < 6; index++) {
+            for (int index = 0; index < CELLS; index++) {
                 pattern_squares[p][sq][index] = -1;
             }
             int index = 0;

@@ -1,18 +1,18 @@
 #ifndef BB_H
 #define BB_H
 
-#include <limits.h>
 #include "common.h"
 
-#define BIT_SLOT(b) ((b) / CHAR_BIT)
-#define BIT_MASK(b) (1 << ((b) % CHAR_BIT))
+#define INT_BIT 32
+#define BIT_SLOT(b) ((b) / INT_BIT)
+#define BIT_MASK(b) (1 << ((b) % INT_BIT))
 #define BIT_SET(a, b) ((a)[BIT_SLOT(b)] |= BIT_MASK(b))
 #define BIT_CLEAR(a, b) ((a)[BIT_SLOT(b)] &= ~BIT_MASK(b))
 #define BIT_TEST(a, b) ((a)[BIT_SLOT(b)] & BIT_MASK(b))
-#define BIT_SLOTS(nb) ((nb + CHAR_BIT - 1) / CHAR_BIT)
+#define BIT_SLOTS(nb) ((nb + INT_BIT - 1) / INT_BIT)
 
 typedef struct {
-    char data[BIT_SLOTS(SQUARES)];
+    unsigned int data[BIT_SLOTS(SQUARES)];
 } bb;
 
 void bb_clear(bb *a);
