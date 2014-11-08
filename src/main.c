@@ -19,18 +19,9 @@ int main(int argc, char *argv[]) {
     // double start = now();
     // while (1) {
     //     Board board;
+    //     Move move;
     //     board_clear(&board);
-    //     while (1) {
-    //         // Move moves[MOVES];
-    //         // int count = gen_moves(&board, moves);
-    //         // if (count == 0) {
-    //         //     break;
-    //         // }
-    //         Move move;
-    //         if (!gen_random_move(&board, &move)) {
-    //             break;
-    //         }
-    //         // printf("hi\n");
+    //     while (gen_random_move(&board, &move)) {
     //         do_move(&board, &move, NULL);
     //     }
     //     games++;
@@ -42,13 +33,21 @@ int main(int argc, char *argv[]) {
 
     Board board;
     board_clear(&board);
+    int passes = 0;
     while (1) {
         Move move;
-        if (!search(&board, 1, &move)) {
+        if (search(&board, 0.5, &move)) {
+            do_move(&board, &move, NULL);
+            passes = 0;
+        }
+        else {
+            do_move(&board, NULL, NULL);
+            passes++;
+        }
+        board_print(&board);
+        if (passes >= PLAYERS) {
             break;
         }
-        do_move(&board, &move, NULL);
-        board_print(&board);
     }
     for (int i = 0; i < PLAYERS; i++) {
         printf("%d: %d\n", i + 1, 89 - board.score[i]);

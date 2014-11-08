@@ -7,11 +7,19 @@
 
 int monte(Board *board, int player, int depth) {
     Move move;
+    int passes = 0;
     for (int i = 0; i < depth; i++) {
-        if (!gen_random_move(board, &move)) {
-            break;
+        if (gen_random_move(board, &move)) {
+            do_move(board, &move, NULL);
+            passes = 0;
         }
-        do_move(board, &move, NULL);
+        else {
+            do_move(board, NULL, NULL);
+            passes++;
+            if (passes >= PLAYERS) {
+                break;
+            }
+        }
     }
     return evaluate(board, player);
 }
@@ -31,7 +39,7 @@ int search(Board *board, double duration, Move *move) {
         for (int i = 0; i < count; i++) {
             board_copy(&temp, board);
             do_move(&temp, &moves[i], NULL);
-            scores[i] += monte(&temp, player, 5);
+            scores[i] += monte(&temp, player, 9);
         }
         if (now() - start > duration) {
             break;
