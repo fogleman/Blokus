@@ -14,6 +14,32 @@ int main(int argc, char *argv[]) {
     srand(time(NULL));
     init_pattern_squares();
     init_placements();
+
+    // int games = 0;
+    // double start = now();
+    // while (1) {
+    //     Board board;
+    //     board_clear(&board);
+    //     while (1) {
+    //         // Move moves[MOVES];
+    //         // int count = gen_moves(&board, moves);
+    //         // if (count == 0) {
+    //         //     break;
+    //         // }
+    //         Move move;
+    //         if (!gen_random_move(&board, &move)) {
+    //             break;
+    //         }
+    //         // printf("hi\n");
+    //         do_move(&board, &move, NULL);
+    //     }
+    //     games++;
+    //     if (games % 1000 == 0) {
+    //         double gps = games / (now() - start);
+    //         printf("%d, %f\n", games, gps);
+    //     }
+    // }
+
     Board board;
     board_clear(&board);
     while (1) {

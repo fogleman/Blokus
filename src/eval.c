@@ -15,5 +15,5 @@ int evaluate(Board *board, int player) {
             others += scores[i];
         }
     }
-    return scores[player] - others;
+    return scores[player] - others * 10;
 }

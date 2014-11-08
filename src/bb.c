@@ -53,13 +53,37 @@ int bb_pop_lsb(bb *a) {
     return bit;
 }
 
-int bb_intersects(bb *a, bb *b) {
-    for (int i = 0; i < SLOTS; i++) {
-        if (a->data[i] & b->data[i]) {
-            return 1;
+int bb_get_bits(bb *a, int *bits) {
+    int result = 0;
+    bb b;
+    bb_copy(&b, a);
+    while (1) {
+        int bit = bb_pop_lsb(&b);
+        if (bit < 0) {
+            break;
         }
+        bits[result++] = bit;
     }
-    return 0;
+    return result;
+}
+
+int bb_intersects(bb *a, bb *b) {
+    unsigned int *p = a->data;
+    unsigned int *q = b->data;
+    return
+        (p[0] & q[0]) |
+        (p[1] & q[1]) |
+        (p[2] & q[2]) |
+        (p[3] & q[3]) |
+        (p[4] & q[4]) |
+        (p[5] & q[5]) |
+        (p[6] & q[6]);
+    // for (int i = 0; i < SLOTS; i++) {
+    //     if (a->data[i] & b->data[i]) {
+    //         return 1;
+    //     }
+    // }
+    // return 0;
 }
 
 int bb_bits(bb *a) {

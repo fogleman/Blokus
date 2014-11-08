@@ -6,13 +6,12 @@
 #include "util.h"
 
 int monte(Board *board, int player, int depth) {
-    Move moves[MOVES];
+    Move move;
     for (int i = 0; i < depth; i++) {
-        int count = gen_moves(board, moves);
-        if (count == 0) {
+        if (!gen_random_move(board, &move)) {
             break;
         }
-        do_move(board, &moves[rand_int(count)], NULL);
+        do_move(board, &move, NULL);
     }
     return evaluate(board, player);
 }

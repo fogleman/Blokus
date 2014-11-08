@@ -33,6 +33,7 @@ void bb_or(bb *out, bb *a, bb *b);
 void bb_and_not(bb *out, bb *a, bb *b);
 int bb_lsb(bb *a);
 int bb_pop_lsb(bb *a);
+int bb_get_bits(bb *a, int *bits);
 int bb_intersects(bb *a, bb *b);
 int bb_bits(bb *a);
 
