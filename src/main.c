@@ -33,9 +33,9 @@ int main(int argc, char *argv[]) {
 
     Board board;
     board_clear(&board);
+    Move move;
     int passes = 0;
     while (1) {
-        Move move;
         if (search(&board, 0.5, &move)) {
             do_move(&board, &move, NULL);
             passes = 0;
@@ -43,11 +43,11 @@ int main(int argc, char *argv[]) {
         else {
             do_move(&board, NULL, NULL);
             passes++;
+            if (passes == PLAYERS) {
+                break;
+            }
         }
         board_print(&board);
-        if (passes >= PLAYERS) {
-            break;
-        }
     }
     for (int i = 0; i < PLAYERS; i++) {
         printf("%d: %d\n", i + 1, 89 - board.score[i]);

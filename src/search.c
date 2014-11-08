@@ -16,7 +16,7 @@ int monte(Board *board, int player, int depth) {
         else {
             do_move(board, NULL, NULL);
             passes++;
-            if (passes >= PLAYERS) {
+            if (passes == PLAYERS) {
                 break;
             }
         }
@@ -26,20 +26,18 @@ int monte(Board *board, int player, int depth) {
 
 int search(Board *board, double duration, Move *move) {
     Move moves[MOVES];
-    int player = board->player;
+    int scores[MOVES] = {0};
     int count = gen_moves(board, moves);
     if (count == 0) {
         return 0;
     }
-    int scores[count];
-    memset(scores, 0, sizeof(scores));
     double start = now();
-    Board temp;
     while (1) {
         for (int i = 0; i < count; i++) {
+            Board temp;
             board_copy(&temp, board);
             do_move(&temp, &moves[i], NULL);
-            scores[i] += monte(&temp, player, 9);
+            scores[i] += monte(&temp, board->player, 15);
         }
         if (now() - start > duration) {
             break;
